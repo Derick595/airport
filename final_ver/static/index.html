@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyResolve AOCC | Airport Operations Command & Conflict Resolution</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="aocc-theme">
+  <main id="accessScreen" class="access-screen" aria-label="SkyResolve access screen">
+    <section class="access-panel">
+      <div class="access-brand">
+        <div class="access-mark" aria-hidden="true"><span></span></div>
+        <div>
+          <p class="access-eyebrow">AIRPORT OPERATIONS CONTROL CENTER</p>
+          <h1>SKYRESOLVE</h1>
+        </div>
+      </div>
+      <div class="access-copy">
+        <p class="access-kicker">Terminal 1–3 · KORD</p>
+        <h2>Operations, clearly coordinated.</h2>
+        <p>Monitor turnaround activity, respond to gate and crew conflicts, and keep the schedule moving.</p>
+      </div>
+      <form id="accessForm" class="access-form">
+        <label for="operatorName">Operator name</label>
+        <input id="operatorName" type="text" autocomplete="name" maxlength="40" placeholder="Enter your name" required>
+        <button class="access-submit" type="submit">
+          Enter Operations Center <span aria-hidden="true">→</span>
+        </button>
+        <p class="access-note">Demo environment · No account required</p>
+      </form>
+    </section>
+    <aside class="access-status" aria-label="System status">
+      <div class="access-air-traffic" aria-hidden="true">
+        <svg class="air-route route-one" viewBox="0 0 500 240" preserveAspectRatio="none"><path d="M-30 190 C 120 30, 275 60, 540 105" /></svg>
+        <svg class="air-route route-two" viewBox="0 0 500 240" preserveAspectRatio="none"><path d="M-20 55 C 145 170, 310 185, 530 80" /></svg>
+        <span class="access-plane plane-one">✈</span>
+        <span class="access-plane plane-two">✈</span>
+        <span class="access-plane plane-three">✈</span>
+      </div>
+      <div class="access-status-top"><span class="access-live-dot"></span> SYSTEM STATUS</div>
+      <strong>All core services operational</strong>
+      <div class="access-status-grid">
+        <span><b>12</b> tracked flights</span>
+        <span><b>5</b> gate bays</span>
+        <span><b>4</b> crew teams</span>
+      </div>
+    </aside>
+  </main>
+  <!-- Top Command Bar -->
+  <header class="command-bar">
+    <div class="command-brand">
+      <div class="radar-beacon">
+        <span class="beacon-ring"></span>
+        <span class="beacon-dot"></span>
+      </div>
+      <div class="brand-headings">
+        <div class="brand-line-1">
+          <span class="brand-title">SKYRESOLVE</span>
+          <span class="facility-code">VOCI • COCHIN INTERNATIONAL</span>
+          <span class="system-status-pill"><span class="status-dot"></span> SYSTEM ONLINE</span>
+        </div>
+        <p class="brand-subtitle">Airfield Resource Allocation & Automated Conflict Remediation System <span class="operator-greeting" id="operatorGreeting"></span></p>
+      </div>
+    </div>
+
+    <div class="command-telemetry">
+      <div class="telemetry-block">
+        <span class="telemetry-label">UTC ZULU</span>
+        <span id="utcClock" class="telemetry-value">--:--:--Z</span>
+      </div>
+      <div class="telemetry-block">
+        <span class="telemetry-label">STATION LOCAL</span>
+        <span id="localClock" class="telemetry-value">--:--:--</span>
+      </div>
+      <div class="sync-switch-wrapper">
+        <label class="toggle-control" title="Toggle automatic 5-second polling">
+          <input type="checkbox" id="autoRefreshToggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="sync-text">Auto-Sync</span>
+      </div>
+      <button id="themeToggle" class="btn-command btn-ghost theme-toggle" type="button" title="Switch colour theme" aria-label="Switch to dark mode">
+        <span id="themeToggleIcon" aria-hidden="true">◐</span>
+        <span id="themeToggleText">Dark mode</span>
+      </button>
+      <button id="btnResetDemo" class="btn-command btn-ghost" title="Revert to calibrated hackathon seed state">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Reset Database
+      </button>
+      <button id="btnLogout" class="btn-command btn-ghost btn-logout" type="button" title="Return to the access screen">Log out</button>
+    </div>
+  </header>
+
+  <!-- Main Viewport -->
+  <div class="viewport-layout">
+    
+    <!-- Executive KPI Banner -->
+    <section class="kpi-banner">
+      <div class="kpi-metric-tile">
+        <div class="kpi-header">
+          <span class="kpi-tag">TOTAL MOVEMENT</span>
+          <svg class="kpi-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div class="kpi-body">
+          <span id="kpiTotalFlights" class="kpi-number">12</span>
+          <span class="kpi-legend">Airframes Tracked</span>
+        </div>
+      </div>
+
+      <div class="kpi-metric-tile tile-green">
+        <div class="kpi-header">
+          <span class="kpi-tag">ON-TIME PERFORMANCE</span>
+          <span class="kpi-badge badge-green" id="kpiOnTimePercent">100%</span>
+        </div>
+        <div class="kpi-body">
+          <span id="kpiOnTime" class="kpi-number text-green">12</span>
+          <span class="kpi-legend">Departures & Arrivals Clear</span>
+        </div>
+      </div>
+
+      <div class="kpi-metric-tile tile-amber">
+        <div class="kpi-header">
+          <span class="kpi-tag">IRREGULAR OPERATIONS</span>
+          <span class="kpi-badge badge-amber" id="kpiDelayCount">0 FLT</span>
+        </div>
+        <div class="kpi-body">
+          <span id="kpiDelayed" class="kpi-number text-amber">0</span>
+          <span class="kpi-legend">&lt; 45m Turnaround Buffer</span>
+        </div>
+      </div>
+
+      <div class="kpi-metric-tile tile-red" id="kpiCriticalTile">
+        <div class="kpi-header">
+          <span class="kpi-tag">ACTIVE CONFLICTS</span>
+          <span class="kpi-badge badge-red" id="kpiConflictStatus">CLEAR</span>
+        </div>
+        <div class="kpi-body">
+          <span id="kpiCritical" class="kpi-number text-red">0</span>
+          <span class="kpi-legend">Gate & Crew Overlaps</span>
+        </div>
+      </div>
+
+      <div class="kpi-metric-tile tile-cyan">
+        <div class="kpi-header">
+          <span class="kpi-tag">AIRFIELD CAPACITY</span>
+          <span class="kpi-badge badge-cyan" id="kpiGateLoad">60%</span>
+        </div>
+        <div class="kpi-body">
+          <span id="kpiGateOccupancy" class="kpi-number text-cyan">3 / 5</span>
+          <span class="kpi-legend">Gate Bays Occupied</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conflict & Recommendation Deck -->
+    <section id="aiResolutionDeck" class="ai-resolution-deck hidden">
+      <div class="deck-header">
+        <div class="deck-title-group">
+          <div class="ai-spark-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div>
+            <h3>Operational Alert Center</h3>
+            <span class="deck-sub">Conflict detection and recommended resource actions</span>
+          </div>
+        </div>
+        <span id="alertCountBadge" class="deck-counter-badge">1 Active Issue</span>
+      </div>
+
+      <div id="alertsList" class="alerts-container-list">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Operations Simulator Deck -->
+    <section class="command-deck-card">
+      <div class="deck-bar">
+        <div class="deck-label-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span class="deck-label">OPERATIONS DELAY SIMULATOR (API: POST /delay)</span>
+        </div>
+        <span class="api-contract-hint">Rule: Delay + Turnaround Buffer (30m) &gt; Next Flight Sched Time</span>
+      </div>
+
+      <form id="delayForm" class="simulator-controls-bar">
+        <div class="control-unit">
+          <label for="flightSelect">TARGET FLIGHT</label>
+          <select id="flightSelect" class="classic-select" required>
+            <option value="">-- Select Scheduled Flight --</option>
+          </select>
+        </div>
+
+        <div class="control-unit">
+          <label for="delayMinutes">DELAY DURATION</label>
+          <div class="preset-input-combo">
+            <input type="number" id="delayMinutes" class="classic-number-input" min="0" max="360" value="45" required>
+            <span class="unit-label">min</span>
+            <div class="preset-cluster">
+              <button type="button" class="preset-chip" data-mins="15">+15m</button>
+              <button type="button" class="preset-chip" data-mins="25">+25m</button>
+              <button type="button" class="preset-chip" data-mins="45">+45m</button>
+              <button type="button" class="preset-chip active" data-mins="50">+50m</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-unit action-unit">
+          <button type="submit" id="btnSimulate" class="btn-command btn-primary-accent">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Trigger Delay & Check Conflicts
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Workspace Tabs Navigation -->
+    <div class="workspace-tabs-row">
+      <div class="tabs-list">
+        <button class="tab-btn active" data-tab="tab-flights">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg>
+          Flight Movements (<span id="tabFlightCount">12</span>)
+        </button>
+        <button class="tab-btn" data-tab="tab-gates">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+          Gate Bays & Utilization
+        </button>
+        <button class="tab-btn" data-tab="tab-crew">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Crew Duty Rotations
+        </button>
+        <button class="tab-btn" data-tab="tab-audit">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Operations Audit Stream
+        </button>
+      </div>
+
+      <!-- Quick Filter for Flights -->
+      <div class="tab-aux-controls" id="flightsAuxControls">
+        <div class="filter-pill-group">
+          <button class="filter-pill active" data-filter="all">All</button>
+          <button class="filter-pill" data-filter="on-time">On Time</button>
+          <button class="filter-pill" data-filter="delayed">Delayed</button>
+          <button class="filter-pill" data-filter="critical">Critical</button>
+        </div>
+        <div class="search-input-wrap">
+          <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="flightSearch" placeholder="Search flight, gate, crew..." class="classic-search">
+          <button id="clearSearchBtn" class="clear-search-btn" title="Clear filter">×</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Contents -->
+    <div class="tab-viewport">
+      
+      <!-- TAB 1: Flights Matrix -->
+      <div id="tab-flights" class="tab-pane active">
+        <div class="matrix-card">
+          <div class="table-container">
+            <table class="aviation-table">
+              <thead>
+                <tr>
+                  <th style="width: 140px;">FLIGHT NO</th>
+                  <th style="width: 110px;">AIRFRAME</th>
+                  <th style="width: 100px;">SCHED DEP</th>
+                  <th style="width: 100px;">EST DEP</th>
+                  <th style="width: 110px;">VARIANCE</th>
+                  <th style="width: 130px;">ASSIGNED GATE</th>
+                  <th style="width: 170px;">CREW ROTATION</th>
+                  <th style="width: 120px;">OPS STATUS</th>
+                  <th style="width: 150px; text-align: right;">QUICK SIMULATION</th>
+                </tr>
+              </thead>
+              <tbody id="flightTableBody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: Gate Bay Status -->
+      <div id="tab-gates" class="tab-pane">
+        <div class="grid-resource-cards" id="gatesGrid">
+          <!-- Gate bay cards injected by JS -->
+        </div>
+      </div>
+
+      <!-- TAB 3: Crew Rotations -->
+      <div id="tab-crew" class="tab-pane">
+        <div class="grid-resource-cards" id="crewGrid">
+          <!-- Crew cards injected by JS -->
+        </div>
+      </div>
+
+      <!-- TAB 4: Operations Audit Log -->
+      <div id="tab-audit" class="tab-pane">
+        <div class="audit-stream-card">
+          <div class="audit-header">
+            <h4>Live Operations & Reassignment Dispatch Stream</h4>
+            <button id="btnClearLogs" class="btn-command btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">Clear Stream</button>
+          </div>
+          <div id="auditLogStream" class="audit-log-entries">
+            <div class="audit-item">
+              <span class="audit-time">14:00:00</span>
+              <span class="audit-badge badge-cyan">SYSTEM</span>
+              <span class="audit-msg">SkyResolve AOCC operational engine initialized with 12 flights, 5 gates, 4 crews.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Floating Toast Notifications -->
+  <div id="toastContainer" class="toast-stack"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
